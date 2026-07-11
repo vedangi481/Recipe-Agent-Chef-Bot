@@ -1,0 +1,693 @@
+/* ================================================================
+   ChefBot — AI Recipe Preparation Agent
+   Custom CSS with Dark Mode, Animations, and Modern Design
+================================================================ */
+
+/* ----------------------------------------------------------------
+   CSS Custom Properties (design tokens)
+---------------------------------------------------------------- */
+:root {
+  /* Brand colours */
+  --ibm-blue:         #0f62fe;
+  --ibm-blue-light:   #4589ff;
+  --ibm-blue-dark:    #0043ce;
+  --brand-green:      #24a148;
+  --brand-orange:     #f1620f;
+
+  /* Light mode surfaces */
+  --bg-primary:       #f4f6fb;
+  --bg-card:          #ffffff;
+  --bg-sidebar:       #f8f9fc;
+  --border-color:     #e5e7eb;
+  --shadow-color:     rgba(0, 0, 0, 0.07);
+
+  /* Text */
+  --text-primary:     #1a1a2e;
+  --text-secondary:   #57606a;
+  --text-muted:       #8b949e;
+
+  /* Chat bubbles */
+  --user-bubble-bg:   #0f62fe;
+  --user-bubble-text: #ffffff;
+  --ai-bubble-bg:     #f0f4f8;
+  --ai-bubble-text:   #1a1a2e;
+  --ai-bubble-border: #dde3ec;
+
+  /* Navbar */
+  --navbar-bg:        rgba(255,255,255,0.92);
+  --navbar-border:    rgba(229,231,235,0.8);
+
+  /* Transitions */
+  --transition:       0.25s ease;
+}
+
+/* Dark mode overrides */
+[data-bs-theme="dark"] {
+  --bg-primary:       #0d1117;
+  --bg-card:          #161b22;
+  --bg-sidebar:       #13181f;
+  --border-color:     #30363d;
+  --shadow-color:     rgba(0, 0, 0, 0.4);
+  --text-primary:     #e6edf3;
+  --text-secondary:   #8b949e;
+  --text-muted:       #6e7681;
+  --ai-bubble-bg:     #21262d;
+  --ai-bubble-text:   #e6edf3;
+  --ai-bubble-border: #30363d;
+  --navbar-bg:        rgba(13,17,23,0.95);
+  --navbar-border:    rgba(48,54,61,0.8);
+}
+
+/* ----------------------------------------------------------------
+   Base & Reset
+---------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, "Segoe UI", system-ui, Roboto, sans-serif;
+  font-size: 14.5px;
+  line-height: 1.6;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.x-small { font-size: 11px; }
+
+/* ----------------------------------------------------------------
+   Navbar
+---------------------------------------------------------------- */
+#mainNav {
+  background: var(--navbar-bg);
+  border-bottom: 1px solid var(--navbar-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 1040;
+}
+
+.brand-icon { font-size: 1.5rem; line-height: 1; }
+.brand-text  { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; }
+
+.bg-ibm-blue { background-color: var(--ibm-blue) !important; }
+
+/* ----------------------------------------------------------------
+   Hero Section
+---------------------------------------------------------------- */
+.hero-section {
+  background: linear-gradient(135deg, #f0f4ff 0%, #fef9f0 100%);
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-bs-theme="dark"] .hero-section {
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+}
+
+.badge-pill {
+  display: inline-block;
+  background: var(--ibm-blue);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 999px;
+}
+
+.hero-title {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+}
+
+.hero-subtitle {
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Example pills */
+.example-pills { max-width: 700px; margin: 0 auto; }
+
+.pill-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.pill-btn:hover {
+  background: var(--ibm-blue);
+  border-color: var(--ibm-blue);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* ----------------------------------------------------------------
+   Cards / Panels
+---------------------------------------------------------------- */
+.panel-card,
+.chat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  overflow: hidden;
+}
+
+.panel-card .card-header {
+  background: var(--bg-sidebar);
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 14px;
+  font-size: 13.5px;
+}
+
+/* ----------------------------------------------------------------
+   Ingredient chips
+---------------------------------------------------------------- */
+.chips-container {
+  min-height: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.ingredient-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #e7f3e8;
+  border: 1px solid #a3d9a5;
+  color: #1a5e1e;
+  font-size: 12.5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  animation: chipIn 0.2s ease;
+}
+
+[data-bs-theme="dark"] .ingredient-chip {
+  background: #1a3320;
+  border-color: #2d5a34;
+  color: #7dd87f;
+}
+
+.ingredient-chip .remove-chip {
+  cursor: pointer;
+  font-size: 10px;
+  opacity: 0.6;
+  transition: opacity var(--transition);
+  border: none;
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+.ingredient-chip .remove-chip:hover { opacity: 1; }
+
+@keyframes chipIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* Quick add buttons */
+.quick-add-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 11.5px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.quick-add-btn:hover {
+  border-color: var(--brand-green);
+  color: var(--brand-green);
+  background: rgba(36,161,72,0.06);
+}
+
+/* ----------------------------------------------------------------
+   Dietary filters
+---------------------------------------------------------------- */
+.dietary-filters .form-check { margin-bottom: 2px; }
+.filter-icon { margin-right: 4px; }
+.form-check-label { font-size: 13px; cursor: pointer; }
+.form-check-input:checked { background-color: var(--ibm-blue); border-color: var(--ibm-blue); }
+
+/* ----------------------------------------------------------------
+   Tab navigation
+---------------------------------------------------------------- */
+.chat-tabs {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 5px;
+  gap: 4px;
+}
+
+.chat-tabs .nav-link {
+  border-radius: 9px;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  transition: all var(--transition);
+  font-weight: 500;
+}
+
+.chat-tabs .nav-link.active {
+  background: var(--ibm-blue);
+  color: #fff;
+}
+
+.tab-panel { animation: fadeSlide 0.2s ease; }
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ----------------------------------------------------------------
+   Chat window
+---------------------------------------------------------------- */
+.chat-card {
+  height: calc(100vh - 290px);
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;         /* card keeps its shape; inner div scrolls */
+}
+
+.chat-messages {
+  flex: 1 1 0;              /* 1 1 0 lets this child shrink so scroll works */
+  min-height: 0;            /* CRITICAL — flexbox won't scroll without this */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;         /* stop scroll leaking to the page */
+  -webkit-overflow-scrolling: touch;    /* smooth momentum on mobile/iOS */
+}
+
+/* Scrollbar — slightly wider, easier to grab */
+.chat-messages::-webkit-scrollbar { width: 6px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+.chat-messages::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Message wrappers */
+.message-wrapper { display: flex; margin-bottom: 14px; min-width: 0; }
+.assistant-message { justify-content: flex-start; }
+.user-message { justify-content: flex-end; }
+
+/* Message bubbles */
+.message-bubble {
+  display: flex;
+  gap: 10px;
+  max-width: 92%;
+  min-width: 0;             /* allows text to wrap inside a flex child */
+}
+
+.user-message .message-bubble {
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  background: var(--ai-bubble-bg);
+  border: 1px solid var(--ai-bubble-border);
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.message-content {
+  background: var(--ai-bubble-bg);
+  border: 1px solid var(--ai-bubble-border);
+  color: var(--ai-bubble-text);
+  padding: 12px 15px;
+  border-radius: 4px 14px 14px 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  animation: bubbleIn 0.2s ease;
+  /* ensure long words / URLs wrap and don't blow out the container */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.user-message .message-content {
+  background: var(--user-bubble-bg);
+  border-color: var(--user-bubble-bg);
+  color: var(--user-bubble-text);
+  border-radius: 14px 4px 14px 14px;
+}
+
+@keyframes bubbleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+/* Markdown rendering inside messages */
+.message-content h1,.message-content h2,.message-content h3 {
+  font-size: 15px; font-weight: 700; margin: 10px 0 5px;
+}
+.message-content ul, .message-content ol { padding-left: 20px; margin-bottom: 8px; }
+.message-content p { margin-bottom: 6px; }
+.message-content p:last-child { margin-bottom: 0; }
+.message-content code {
+  background: rgba(0,0,0,0.08);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 12.5px;
+}
+[data-bs-theme="dark"] .message-content code { background: rgba(255,255,255,0.08); }
+
+/* Message action buttons */
+.message-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.msg-action-btn {
+  font-size: 11.5px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.msg-action-btn:hover { background: var(--ibm-blue); border-color: var(--ibm-blue); color: #fff; }
+
+/* Timestamp */
+.msg-timestamp { font-size: 10.5px; color: var(--text-muted); margin-top: 4px; text-align: right; }
+
+/* Typing indicator */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.typing-bubble {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  background: var(--ai-bubble-bg);
+  border: 1px solid var(--ai-bubble-border);
+  padding: 8px 12px;
+  border-radius: 14px;
+}
+
+.typing-bubble span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ibm-blue);
+  animation: typingDot 1.2s infinite ease-in-out;
+}
+.typing-bubble span:nth-child(1) { animation-delay: 0s; }
+.typing-bubble span:nth-child(2) { animation-delay: 0.2s; }
+.typing-bubble span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* Chat input */
+.chat-input-area {
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-card);
+}
+
+.chat-textarea {
+  resize: none;
+  border-radius: 10px;
+  font-size: 14px;
+  background: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  transition: border-color var(--transition);
+}
+.chat-textarea:focus {
+  border-color: var(--ibm-blue);
+  box-shadow: 0 0 0 3px rgba(15,98,254,0.12);
+}
+
+.send-btn {
+  border-radius: 10px;
+  padding: 0 18px;
+  background: var(--ibm-blue);
+  border-color: var(--ibm-blue);
+  font-size: 16px;
+  transition: all var(--transition);
+}
+.send-btn:hover { background: var(--ibm-blue-dark); transform: scale(1.05); }
+.send-btn:disabled { opacity: 0.5; transform: none; }
+
+/* ----------------------------------------------------------------
+   Recipe Cards
+---------------------------------------------------------------- */
+.recipe-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.recipe-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--shadow-color);
+}
+
+.recipe-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.difficulty-badge {
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+.difficulty-badge.easy   { background: #d1fae5; color: #065f46; }
+.difficulty-badge.medium { background: #fef3c7; color: #92400e; }
+.difficulty-badge.hard   { background: #fee2e2; color: #991b1b; }
+
+[data-bs-theme="dark"] .difficulty-badge.easy   { background: #0d3320; color: #6ee7b7; }
+[data-bs-theme="dark"] .difficulty-badge.medium { background: #3d2c00; color: #fcd34d; }
+[data-bs-theme="dark"] .difficulty-badge.hard   { background: #3d0a0a; color: #fca5a5; }
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.dietary-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.dietary-tag {
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(15,98,254,0.08);
+  border: 1px solid rgba(15,98,254,0.2);
+  color: var(--ibm-blue);
+}
+[data-bs-theme="dark"] .dietary-tag { background: rgba(69,137,255,0.12); color: var(--ibm-blue-light); }
+
+/* ----------------------------------------------------------------
+   Nutrition Panel
+---------------------------------------------------------------- */
+.macro-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.calorie-badge {
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.calorie-number { display: block; font-size: 2rem; font-weight: 700; color: var(--ibm-blue); }
+.calorie-label  { font-size: 11px; color: var(--text-muted); }
+
+/* ----------------------------------------------------------------
+   Cooking Tips
+---------------------------------------------------------------- */
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.tip-item:last-child { border-bottom: none; }
+.tip-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+/* ----------------------------------------------------------------
+   Language Panel
+---------------------------------------------------------------- */
+.lang-flag { font-size: 1.3rem; }
+
+/* ----------------------------------------------------------------
+   Substitution / Nutrition Modal Results
+---------------------------------------------------------------- */
+.substitution-result,
+.nutrition-result {
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.7;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* ----------------------------------------------------------------
+   Favorites / History Lists
+---------------------------------------------------------------- */
+.history-item,
+.fav-item {
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.history-item:hover,
+.fav-item:hover {
+  border-color: var(--ibm-blue);
+  background: rgba(15,98,254,0.04);
+}
+
+.history-query {
+  font-weight: 600;
+  font-size: 13.5px;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-timestamp { font-size: 11px; color: var(--text-muted); }
+
+/* ----------------------------------------------------------------
+   Toast notifications
+---------------------------------------------------------------- */
+.toast {
+  border-radius: 10px;
+  font-size: 13.5px;
+  border: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* ----------------------------------------------------------------
+   Quick Tools buttons
+---------------------------------------------------------------- */
+.btn-outline-info, .btn-outline-success, .btn-outline-warning {
+  transition: all var(--transition);
+}
+
+/* ----------------------------------------------------------------
+   Loading spinner for buttons
+---------------------------------------------------------------- */
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+}
+.btn-loading::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  top: 50%;
+  left: 50%;
+  margin: -7px 0 0 -7px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ----------------------------------------------------------------
+   Cooking Guide
+---------------------------------------------------------------- */
+#guideBody h1, #guideBody h2, #guideBody h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 14px 0 6px;
+}
+#guideBody ul, #guideBody ol { padding-left: 20px; }
+#guideBody li { margin-bottom: 5px; }
+#guideBody strong { color: var(--ibm-blue); }
+
+/* ----------------------------------------------------------------
+   Responsive overrides
+---------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+  .chat-card {
+    height: 70vh;
+    min-height: 400px;
+  }
+  .chat-messages {
+    min-height: 0;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .hero-title { font-size: 1.4rem; }
+  .hero-subtitle { font-size: 0.9rem; }
+  .chat-card { height: 60vh; min-height: 320px; }
+  .example-pills .pill-btn { font-size: 11.5px; padding: 4px 10px; }
+}
+
+/* ----------------------------------------------------------------
+   Smooth dark mode transition
+---------------------------------------------------------------- */
+body, .card, .navbar, .offcanvas, .modal-content, .toast {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+}
+
+/* ----------------------------------------------------------------
+   Accessibility
+---------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--ibm-blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

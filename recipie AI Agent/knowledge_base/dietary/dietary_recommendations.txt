@@ -1,0 +1,236 @@
+=== DIETARY RECOMMENDATIONS AND SPECIAL DIETS GUIDE ===
+
+--- VEGETARIAN DIET ---
+Definition: Excludes meat, poultry, and seafood. May include dairy and eggs.
+
+Types:
+- Lacto-vegetarian: Includes dairy, excludes eggs (most common in India)
+- Ovo-vegetarian: Includes eggs, excludes dairy
+- Lacto-ovo-vegetarian: Includes both dairy and eggs
+
+Protein sources for vegetarians:
+- Dairy: Paneer, milk, yogurt, cheese (high calcium + protein)
+- Eggs: Complete protein source
+- Legumes: Lentils, chickpeas, rajma, chana dal
+- Nuts and seeds: Almonds, peanuts, flaxseeds
+- Whole grains: Quinoa (complete protein), amaranth
+
+Nutrients to watch:
+- Vitamin B12: Limited to dairy and eggs
+- Iron: Use with vitamin C for better absorption
+- Zinc: Legumes, nuts, seeds
+- Omega-3: Flaxseeds, walnuts, chia seeds
+
+Sample high-protein vegetarian meals:
+- Breakfast: Paneer bhurji with whole wheat toast + milk
+- Lunch: Rajma rice with yogurt raita
+- Dinner: Dal tadka + roti + vegetable sabzi
+
+--- VEGAN DIET ---
+Definition: Excludes all animal products including dairy, eggs, honey
+
+Critical nutrients to supplement:
+1. Vitamin B12 (ESSENTIAL supplement — not found in plant foods)
+2. Vitamin D3 (vegan: D2 or algae-based D3)
+3. Omega-3 (algae oil)
+4. Iron (legumes + vitamin C)
+5. Calcium (fortified plant milks, tofu, leafy greens)
+6. Zinc (legumes, seeds, fortified foods)
+7. Iodine (iodized salt, seaweed)
+
+Top plant-based protein foods:
+- Tofu: 8g protein/100g
+- Tempeh: 19g protein/100g
+- Edamame: 11g protein/100g
+- Lentils: 9g protein/100g cooked
+- Black beans: 9g protein/100g cooked
+- Quinoa: 4g protein/100g cooked (complete protein)
+- Seitan (wheat gluten): 25g protein/100g
+
+Vegan Indian recipes: Most dal dishes are naturally vegan (skip ghee, use oil). Vegetable biryanis, aloo matar, chana masala, baingan bharta are naturally vegan.
+
+--- JAIN DIET ---
+Definition: Strict vegetarian diet avoiding root vegetables and some other foods for religious/ethical reasons
+
+STRICTLY AVOIDED:
+- Root vegetables: Onion, garlic, potato, carrot, beetroot, radish, turnip, leeks
+- Eggplant/brinjal (some Jains)
+- Consumption restricted during certain periods (Paryushana)
+
+Reason: Root vegetables are believed to contain many microorganisms; pulling them harms the entire plant
+
+ALLOWED:
+- Above-ground vegetables: Tomatoes, peas, beans, capsicum, okra, pumpkin
+- Leafy vegetables: Spinach, fenugreek leaves
+- Fruits
+- Dairy products
+- Grains, legumes, nuts
+
+Jain cooking adaptations:
+- Replace onion with asafoetida (hing) and fenugreek leaves
+- Replace garlic with ginger + hing
+- Use raw banana or yam instead of potato
+- Use hing generously as flavor base
+
+Popular Jain recipes:
+- Jain Dal Makhani (without onion/garlic)
+- Jain Khichdi
+- Jain Kadhi
+- Panchkutiyu Dal (Gujarati Jain specialty)
+
+--- GLUTEN-FREE DIET ---
+Definition: Eliminates gluten, a protein found in wheat, barley, rye
+
+Foods to STRICTLY AVOID:
+- Wheat flour (maida, atta)
+- Barley (jau)
+- Rye
+- Most bread, pasta, noodles
+- Soy sauce (contains wheat)
+- Beer (made from barley)
+
+Hidden sources of gluten:
+- Sauces (soy sauce, teriyaki)
+- Soups (thickened with flour)
+- Processed foods
+- Oats (unless labeled gluten-free — cross-contamination risk)
+
+Safe gluten-free grains and alternatives:
+- Rice and rice flour
+- Corn and cornstarch
+- Quinoa
+- Millet (bajra, jowar, ragi)
+- Buckwheat (no relation to wheat despite name)
+- Chickpea flour (besan)
+- Almond flour, coconut flour
+
+Naturally gluten-free Indian dishes:
+- All dal recipes (using natural dal, no additives)
+- Most rice preparations
+- Sabzis (vegetable dishes without flour)
+- Tandoori dishes (watch marinade)
+- Dosa, idli (rice-based)
+- Ragi roti
+
+Note for Celiac patients: Even small amounts of gluten cause intestinal damage. Dedicated utensils and cooking surfaces needed.
+
+--- DIABETIC-FRIENDLY DIET ---
+Goal: Stable blood sugar levels through low-GI foods
+
+Key principles:
+1. Choose low-GI foods (GI < 55)
+2. Include fiber at every meal
+3. Eat smaller, frequent meals
+4. Limit refined carbs and sugars
+5. Pair carbs with protein and healthy fats
+
+Low-GI food choices:
+- Grains: Oats (GI 55), brown rice (GI 50), barley (GI 28)
+- Legumes: Lentils (GI 32), chickpeas (GI 28), rajma (GI 29) — excellent choices
+- Vegetables: Most non-starchy vegetables (GI 15-35)
+- Fruits: Berries, guava, papaya, apple (avoid mangoes, bananas in large amounts)
+
+Foods to limit:
+- White rice, white bread, maida
+- Sugary beverages, fruit juices
+- Sweet snacks, mithai
+- Processed foods
+
+Sample diabetic-friendly Indian menu:
+- Breakfast: Vegetable poha + 1 boiled egg + buttermilk
+- Lunch: 2 multigrain rotis + dal + mixed vegetable sabzi + salad
+- Dinner: 1 bowl daliya khichdi + curd
+- Snacks: Roasted chana, fresh fruit (small portion)
+
+--- HIGH-PROTEIN DIET ---
+Goal: 25-35% of calories from protein
+
+Benefits: Muscle building, satiety, metabolic health
+
+Daily targets:
+- Athletes/muscle building: 1.6-2.2g protein per kg body weight
+- Weight management: 1.2-1.6g per kg
+- General health: 0.8-1.0g per kg
+
+High-protein vegetarian meal plan:
+- Breakfast: Greek yogurt with nuts and seeds + eggs (if not vegan) — 25g protein
+- Lunch: Rajma/chickpea curry + paneer sabzi + 1 roti — 35g protein
+- Dinner: Tofu stir-fry + quinoa — 30g protein
+- Snacks: Roasted edamame, boiled eggs, paneer cubes — 15g protein
+
+Protein combining tip: Grains + legumes together = complete protein (dal + rice, roti + dal)
+
+--- LOW-CARB DIET ---
+Goal: Limit carbohydrates to 50-150g/day
+
+Focus foods:
+- Proteins: All meats, eggs, paneer, Greek yogurt
+- Fats: Nuts, seeds, olive oil, avocado, ghee
+- Low-carb vegetables: Leafy greens, broccoli, cauliflower, capsicum, zucchini, mushrooms
+
+Foods to avoid:
+- Grains (rice, roti, bread, pasta)
+- Root vegetables in large quantities
+- Sugary fruits
+- Legumes (moderate amounts only)
+
+Low-carb Indian adaptations:
+- Cauliflower rice instead of rice
+- Paneer scramble instead of dal-rice
+- Vegetable curries without potato
+- Egg dishes
+- Tandoori items (skip bread)
+
+--- WEIGHT MANAGEMENT ---
+Caloric deficit for weight loss: 300-500 calories below maintenance
+Caloric surplus for weight gain: 200-400 calories above maintenance
+
+Weight loss tips in Indian cooking:
+- Use less oil (1-2 tsp instead of 4-6 tbsp)
+- Prefer baking/roasting/air-frying over deep frying
+- Increase vegetable portion, decrease grain portion
+- Use full-fat dairy in moderation for satiety
+- Choose whole grains over refined
+
+--- HEART-HEALTHY DIET ---
+Guidelines:
+- Limit saturated fat, eliminate trans fats
+- Increase fiber (target 25-35g daily)
+- Reduce sodium (less than 2300mg daily)
+- Increase omega-3 fatty acids
+- Moderate alcohol consumption
+
+Heart-healthy Indian cooking:
+- Replace ghee with olive oil or minimal amounts
+- Steam or boil instead of frying
+- Use less salt; flavor with spices and lemon
+- Include walnuts, flaxseeds daily
+- Garlic, onions, turmeric have heart-protective properties
+- Oats, lentils, beans reduce LDL cholesterol
+
+--- POST-WORKOUT NUTRITION ---
+Within 30-60 minutes after exercise:
+- Protein: 20-40g for muscle repair
+- Carbs: 1g per kg body weight for glycogen replenishment
+- Avoid high fat immediately post-workout
+
+Quick Indian post-workout snacks:
+- Paneer + roti (fast prep)
+- Greek yogurt with banana
+- Egg white omelet with whole wheat toast
+- Chana chaat (chickpea salad)
+
+--- IMMUNITY BOOSTING FOODS ---
+Key nutrients and sources:
+- Vitamin C: Lemon, guava, bell peppers, amla (Indian gooseberry)
+- Zinc: Pumpkin seeds, legumes, nuts
+- Turmeric: Curcumin has anti-inflammatory properties
+- Ginger: Anti-inflammatory, digestive support
+- Garlic: Allicin has antimicrobial properties
+- Probiotics: Yogurt, curd, fermented foods (idli, dosa, kanji)
+
+Immunity-boosting recipes:
+- Golden milk (haldi doodh): Turmeric + warm milk + pepper + honey
+- Ginger-tulsi kadha (traditional Indian remedy)
+- Amla juice (high Vitamin C)
+- Curd with meals (probiotic benefit)

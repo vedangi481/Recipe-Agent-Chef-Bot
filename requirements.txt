@@ -1,0 +1,25 @@
+# ================================================================
+# Recipe Preparation Agent — Python Dependencies
+# IBM watsonx.ai + Granite + ChromaDB RAG
+# Python 3.13 compatible — no C compiler required
+# ================================================================
+
+# ── Core Web Framework ──────────────────────────────────────────
+Flask==3.0.3
+python-dotenv==1.0.1
+Werkzeug==3.0.4
+
+# ── IBM watsonx.ai SDK ───────────────────────────────────────────
+# 1.3+ resolves pandas>=2.2 which has Python 3.13 wheels
+ibm-watsonx-ai>=1.3.0
+
+# ── ChromaDB ≥ 1.0 — pure Python, no C compiler required ────────
+# ChromaDB 1.x dropped chroma-hnswlib (C++) in favour of sqlite-vec.
+# All wheels are pre-built; no Visual C++ Build Tools needed.
+chromadb>=1.0.0
+
+# ── Production server ─────────────────────────────────────────────
+gunicorn==23.0.0
+
+# ── Optional: PDF knowledge base ingestion ──────────────────────
+# PyMuPDF==1.24.0

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChefBot — AI Recipe Preparation Agent | IBM Granite</title>
+  <meta name="description" content="AI-powered Recipe Assistant using IBM watsonx.ai Granite models with RAG pipeline" />
+
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg sticky-top" id="mainNav">
+    <div class="container-fluid px-3 px-lg-4">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+        <span class="brand-icon">👨‍🍳</span>
+        <span class="brand-text">ChefBot</span>
+        <span class="badge bg-ibm-blue ms-1 d-none d-sm-inline">IBM Granite</span>
+      </a>
+      <div class="d-flex align-items-center gap-2 ms-auto">
+        <!-- Demo mode badge -->
+        {% if demo_mode %}
+        <span class="badge bg-warning text-dark d-none d-md-inline" title="Configure IBM_API_KEY in .env for full AI">
+          <i class="bi bi-exclamation-triangle me-1"></i>Demo Mode
+        </span>
+        {% else %}
+        <span class="badge bg-success d-none d-md-inline">
+          <i class="bi bi-check-circle me-1"></i>Granite AI Active
+        </span>
+        {% endif %}
+        <!-- Dark mode toggle -->
+        <button class="btn btn-sm btn-outline-secondary rounded-pill" id="darkModeToggle" title="Toggle dark mode">
+          <i class="bi bi-moon-stars-fill" id="darkModeIcon"></i>
+        </button>
+        <!-- Favorites panel trigger -->
+        <button class="btn btn-sm btn-outline-warning rounded-pill" data-bs-toggle="offcanvas" data-bs-target="#favoritesPanel" title="Saved recipes">
+          <i class="bi bi-bookmark-star-fill"></i>
+          <span class="badge bg-danger ms-1 d-none" id="favCount">0</span>
+        </button>
+        <!-- History panel trigger -->
+        <button class="btn btn-sm btn-outline-secondary rounded-pill" data-bs-toggle="offcanvas" data-bs-target="#historyPanel" title="Chat history">
+          <i class="bi bi-clock-history"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero-section text-center py-4 py-md-5">
+    <div class="container">
+      <div class="hero-badge mb-3">
+        <span class="badge-pill">
+          <i class="bi bi-stars me-1"></i>Powered by IBM watsonx.ai &amp; Granite Models
+        </span>
+      </div>
+      <h1 class="hero-title">Your AI Recipe Preparation Agent</h1>
+      <p class="hero-subtitle">Tell me what ingredients you have — I'll craft personalized recipes using RAG-powered knowledge.</p>
+      <!-- Quick example pills -->
+      <div class="example-pills d-flex flex-wrap justify-content-center gap-2 mt-3">
+        <button class="pill-btn" data-query="I have potatoes, onions, tomatoes and cheese. What can I cook?">🥔 Potatoes &amp; Cheese</button>
+        <button class="pill-btn" data-query="Suggest a high-protein vegetarian dinner">💪 High-Protein Veg</button>
+        <button class="pill-btn" data-query="How do I replace eggs in a recipe?">🥚 Egg Substitutes</button>
+        <button class="pill-btn" data-query="Give me gluten-free breakfast ideas">🌾 Gluten-Free Breakfast</button>
+        <button class="pill-btn" data-query="I only have leftover rice and vegetables">🍚 Leftover Rice</button>
+        <button class="pill-btn" data-query="What can I make with paneer and spinach?">🧀 Paneer &amp; Spinach</button>
+        <button class="pill-btn" data-query="Suggest a recipe under 20 minutes">⚡ Under 20 Minutes</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="container-fluid px-3 px-lg-4 pb-5">
+    <div class="row g-3 g-lg-4">
+
+      <!-- ============================================================ -->
+      <!-- LEFT SIDEBAR — Ingredient Panel + Filters                    -->
+      <!-- ============================================================ -->
+      <div class="col-12 col-lg-3">
+
+        <!-- Ingredient Input Panel -->
+        <div class="card panel-card mb-3">
+          <div class="card-header d-flex align-items-center gap-2">
+            <i class="bi bi-basket3-fill text-success"></i>
+            <span class="fw-semibold">Ingredients I Have</span>
+          </div>
+          <div class="card-body p-3">
+            <!-- Manual entry -->
+            <div class="input-group input-group-sm mb-3">
+              <input type="text" id="ingredientInput" class="form-control" placeholder="Type ingredient…" maxlength="60" />
+              <button class="btn btn-success btn-sm" id="addIngredientBtn" title="Add">
+                <i class="bi bi-plus-lg"></i>
+              </button>
+            </div>
+            <!-- Ingredient chips container -->
+            <div id="ingredientChips" class="chips-container mb-3">
+              <span class="text-muted small">No ingredients added yet.</span>
+            </div>
+            <!-- Common ingredient quick-add -->
+            <p class="text-muted small mb-2">Quick add:</p>
+            <div class="d-flex flex-wrap gap-1 mb-3">
+              <button class="quick-add-btn" data-ing="Rice">Rice</button>
+              <button class="quick-add-btn" data-ing="Onion">Onion</button>
+              <button class="quick-add-btn" data-ing="Tomato">Tomato</button>
+              <button class="quick-add-btn" data-ing="Potato">Potato</button>
+              <button class="quick-add-btn" data-ing="Eggs">Eggs</button>
+              <button class="quick-add-btn" data-ing="Paneer">Paneer</button>
+              <button class="quick-add-btn" data-ing="Spinach">Spinach</button>
+              <button class="quick-add-btn" data-ing="Lentils">Lentils</button>
+              <button class="quick-add-btn" data-ing="Chickpeas">Chickpeas</button>
+              <button class="quick-add-btn" data-ing="Garlic">Garlic</button>
+            </div>
+            <!-- Action buttons -->
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary btn-sm" id="findRecipesBtn">
+                <i class="bi bi-search me-1"></i>Find Recipes
+              </button>
+              <button class="btn btn-outline-secondary btn-sm" id="clearIngredientsBtn">
+                <i class="bi bi-trash me-1"></i>Clear All
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dietary Preference Filters -->
+        <div class="card panel-card mb-3">
+          <div class="card-header d-flex align-items-center gap-2">
+            <i class="bi bi-funnel-fill text-primary"></i>
+            <span class="fw-semibold">Dietary Preferences</span>
+          </div>
+          <div class="card-body p-3">
+            <div class="dietary-filters d-flex flex-column gap-2">
+              <div class="form-check">
+                <input class="form-check-input dietary-filter" type="checkbox" value="Vegetarian" id="filterVeg">
+                <label class="form-check-label" for="filterVeg"><span class="filter-icon">🌿</span> Vegetarian</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input dietary-filter" type="checkbox" value="Vegan" id="filterVegan">
+                <label class="form-check-label" for="filterVegan"><span class="filter-icon">🌱</span> Vegan</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input dietary-filter" type="checkbox" value="Jain" id="filterJain">
+                <label class="form-check-label" for="filterJain"><span class="filter-icon">🙏</span> Jain</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input dietary-filter" type="checkbox" value="Gluten-Free" id="filterGF">
+                <label class="form-check-label" for="filterGF"><span class="filter-icon">🌾</span> Gluten-Free</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input dietary-filter" type="checkbox" value="High-Protein" id="filterHP">
+                <label class="form-check-label" for="filterHP"><span class="filter-icon">💪</span> High-Protein</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input dietary-filter" type="checkbox" value="Low-Carb" id="filterLC">
+                <label class="form-check-label" for="filterLC"><span class="filter-icon">📉</span> Low-Carb</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input dietary-filter" type="checkbox" value="Diabetic-Friendly" id="filterDiabetic">
+                <label class="form-check-label" for="filterDiabetic"><span class="filter-icon">🩺</span> Diabetic-Friendly</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input dietary-filter" type="checkbox" value="Dairy-Free" id="filterDF">
+                <label class="form-check-label" for="filterDF"><span class="filter-icon">🥛</span> Dairy-Free</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Tools -->
+        <div class="card panel-card">
+          <div class="card-header d-flex align-items-center gap-2">
+            <i class="bi bi-tools text-warning"></i>
+            <span class="fw-semibold">Quick Tools</span>
+          </div>
+          <div class="card-body p-3 d-grid gap-2">
+            <button class="btn btn-outline-info btn-sm text-start" id="substitutionToolBtn">
+              <i class="bi bi-arrow-left-right me-2"></i>Substitution Finder
+            </button>
+            <button class="btn btn-outline-success btn-sm text-start" id="nutritionToolBtn">
+              <i class="bi bi-heart-pulse me-2"></i>Nutrition Analyzer
+            </button>
+            <button class="btn btn-outline-warning btn-sm text-start" id="leftoverToolBtn">
+              <i class="bi bi-recycle me-2"></i>Leftover Ideas
+            </button>
+            <button class="btn btn-outline-secondary btn-sm text-start" id="cookingTipsBtn">
+              <i class="bi bi-lightbulb me-2"></i>Cooking Tips
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- CENTER PANEL — Chat + Recipe Display                          -->
+      <!-- ============================================================ -->
+      <div class="col-12 col-lg-6">
+
+        <!-- Tab Navigation -->
+        <ul class="nav nav-pills nav-fill mb-3 chat-tabs" id="mainTabs">
+          <li class="nav-item">
+            <button class="nav-link active" data-tab="chat"><i class="bi bi-chat-dots me-1"></i>AI Chat</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-tab="recipes"><i class="bi bi-grid-3x2-gap me-1"></i>Recipes</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-tab="guide"><i class="bi bi-journal-text me-1"></i>Cook Guide</button>
+          </li>
+        </ul>
+
+        <!-- ===== TAB: CHAT ===== -->
+        <div id="tabChat" class="tab-panel active">
+          <div class="card chat-card">
+            <div class="card-body p-0 d-flex flex-column">
+              <!-- Chat messages area -->
+              <div class="chat-messages" id="chatMessages">
+                <!-- Welcome message -->
+                <div class="message-wrapper assistant-message">
+                  <div class="message-bubble">
+                    <div class="message-avatar">👨‍🍳</div>
+                    <div class="message-content">
+                      <p class="mb-2"><strong>Welcome to ChefBot!</strong> Your AI-powered Recipe Preparation Assistant.</p>
+                      <p class="mb-2">I'm powered by <strong>IBM Granite</strong> with a RAG pipeline over a curated recipe knowledge base. I can help you:</p>
+                      <ul class="mb-2">
+                        <li>🥘 Find recipes with your available ingredients</li>
+                        <li>🔄 Suggest ingredient substitutions</li>
+                        <li>🌿 Filter by dietary preferences</li>
+                        <li>🍚 Use up leftovers creatively</li>
+                        <li>📊 Analyze nutritional content</li>
+                        <li>💡 Share cooking tips &amp; techniques</li>
+                      </ul>
+                      {% if demo_mode %}
+                      <div class="alert alert-warning py-2 mb-0">
+                        <i class="bi bi-exclamation-triangle me-1"></i>
+                        <strong>Demo Mode:</strong> Configure <code>IBM_API_KEY</code> &amp; <code>IBM_PROJECT_ID</code> in <code>.env</code> for full Granite AI responses.
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Typing indicator -->
+              <div class="typing-indicator d-none" id="typingIndicator">
+                <div class="typing-bubble">
+                  <span></span><span></span><span></span>
+                </div>
+                <span class="typing-text">ChefBot is thinking…</span>
+              </div>
+
+              <!-- Chat input -->
+              <div class="chat-input-area p-3">
+                <div class="input-group">
+                  <textarea
+                    id="chatInput"
+                    class="form-control chat-textarea"
+                    placeholder="Ask me about recipes, ingredients, substitutions… (English or हिंदी)"
+                    rows="2"
+                    maxlength="1000"
+                  ></textarea>
+                  <button class="btn btn-primary send-btn" id="sendBtn" title="Send (Enter)">
+                    <i class="bi bi-send-fill"></i>
+                  </button>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="text-muted small">
+                    <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for new line
+                  </span>
+                  <button class="btn btn-link btn-sm text-danger p-0" id="clearChatBtn">
+                    <i class="bi bi-trash me-1"></i>Clear chat
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== TAB: RECIPE CARDS ===== -->
+        <div id="tabRecipes" class="tab-panel d-none">
+          <div id="recipeGrid" class="row g-3">
+            <div class="col-12 text-center py-5 text-muted" id="recipeEmptyState">
+              <i class="bi bi-journal-richtext display-4 mb-3 d-block"></i>
+              <p>Add ingredients and click <strong>Find Recipes</strong> to see personalized suggestions here.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== TAB: COOKING GUIDE ===== -->
+        <div id="tabGuide" class="tab-panel d-none">
+          <div class="card" id="cookingGuideCard">
+            <div class="card-body text-center py-5 text-muted" id="guideEmptyState">
+              <i class="bi bi-book display-4 mb-3 d-block"></i>
+              <p>Select a recipe from the chat or Recipes tab to view the step-by-step cooking guide.</p>
+            </div>
+            <div class="card-body p-4 d-none" id="guideContent">
+              <div id="guideBody"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- RIGHT SIDEBAR — Nutrition + Tips                              -->
+      <!-- ============================================================ -->
+      <div class="col-12 col-lg-3">
+
+        <!-- Nutrition Panel -->
+        <div class="card panel-card mb-3">
+          <div class="card-header d-flex align-items-center gap-2">
+            <i class="bi bi-heart-pulse-fill text-danger"></i>
+            <span class="fw-semibold">Nutrition Panel</span>
+          </div>
+          <div class="card-body p-3" id="nutritionPanel">
+            <p class="text-muted small mb-3">Nutritional analysis will appear here after generating a recipe.</p>
+            <!-- Nutrition chart placeholder -->
+            <div class="nutrition-chart" id="nutritionChart">
+              <div class="macro-bar-container">
+                <div class="macro-label"><span>Protein</span><span id="proteinVal">—</span></div>
+                <div class="progress mb-2"><div class="progress-bar bg-success" id="proteinBar" style="width:0%"></div></div>
+                <div class="macro-label"><span>Carbs</span><span id="carbsVal">—</span></div>
+                <div class="progress mb-2"><div class="progress-bar bg-warning" id="carbsBar" style="width:0%"></div></div>
+                <div class="macro-label"><span>Fat</span><span id="fatVal">—</span></div>
+                <div class="progress mb-2"><div class="progress-bar bg-danger" id="fatBar" style="width:0%"></div></div>
+                <div class="macro-label"><span>Fiber</span><span id="fiberVal">—</span></div>
+                <div class="progress mb-3"><div class="progress-bar bg-info" id="fiberBar" style="width:0%"></div></div>
+              </div>
+              <div class="calorie-badge text-center">
+                <span class="calorie-number" id="calorieDisplay">—</span>
+                <span class="calorie-label">kcal per serving</span>
+              </div>
+            </div>
+            <button class="btn btn-outline-danger btn-sm w-100 mt-3" id="analyzeNutritionBtn">
+              <i class="bi bi-search me-1"></i>Analyze Current Recipe
+            </button>
+          </div>
+        </div>
+
+        <!-- Smart Cooking Tips -->
+        <div class="card panel-card mb-3">
+          <div class="card-header d-flex align-items-center gap-2">
+            <i class="bi bi-lightbulb-fill text-warning"></i>
+            <span class="fw-semibold">Smart Tips</span>
+          </div>
+          <div class="card-body p-3" id="tipsPanel">
+            <div class="tip-item">
+              <span class="tip-icon">🧂</span>
+              <span>Always taste and adjust seasoning at the end of cooking.</span>
+            </div>
+            <div class="tip-item">
+              <span class="tip-icon">🔥</span>
+              <span>Let the pan get hot before adding oil for better sautéing.</span>
+            </div>
+            <div class="tip-item">
+              <span class="tip-icon">🌿</span>
+              <span>Add fresh herbs at the end to preserve their flavour.</span>
+            </div>
+            <div class="tip-item">
+              <span class="tip-icon">🕐</span>
+              <span>Read the entire recipe before you start cooking.</span>
+            </div>
+            <div class="tip-item">
+              <span class="tip-icon">🧊</span>
+              <span>Blanch &amp; ice-bath vegetables to preserve vibrant green colour.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Language Support Info -->
+        <div class="card panel-card">
+          <div class="card-header d-flex align-items-center gap-2">
+            <i class="bi bi-translate text-info"></i>
+            <span class="fw-semibold">Language Support</span>
+          </div>
+          <div class="card-body p-3">
+            <div class="lang-item d-flex align-items-center gap-2 mb-2">
+              <span class="lang-flag">🇬🇧</span>
+              <div>
+                <div class="fw-medium small">English</div>
+                <div class="text-muted x-small">Fully supported</div>
+              </div>
+            </div>
+            <div class="lang-item d-flex align-items-center gap-2 mb-2">
+              <span class="lang-flag">🇮🇳</span>
+              <div>
+                <div class="fw-medium small">Hindi (हिंदी)</div>
+                <div class="text-muted x-small">Supported — type in Devanagari</div>
+              </div>
+            </div>
+            <div class="lang-item d-flex align-items-center gap-2">
+              <span class="lang-flag">🗣️</span>
+              <div>
+                <div class="fw-medium small">Hinglish</div>
+                <div class="text-muted x-small">Mix of Hindi &amp; English</div>
+              </div>
+            </div>
+            <p class="text-muted x-small mt-2 mb-0">Example: <em>"मुझे आलू और प्याज से कोई recipe बताओ"</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================================================================ -->
+  <!-- SUBSTITUTION MODAL                                                -->
+  <!-- ================================================================ -->
+  <div class="modal fade" id="substitutionModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-arrow-left-right me-2 text-info"></i>Ingredient Substitution Finder</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <label class="form-label fw-medium">Which ingredient do you want to replace?</label>
+          <div class="input-group mb-3">
+            <input type="text" id="substitutionInput" class="form-control" placeholder="e.g., eggs, butter, milk, paneer…" />
+            <button class="btn btn-info" id="findSubstitutionBtn">
+              <i class="bi bi-search me-1"></i>Find
+            </button>
+          </div>
+          <div id="substitutionResult" class="substitution-result d-none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- NUTRITION MODAL                                                   -->
+  <!-- ================================================================ -->
+  <div class="modal fade" id="nutritionModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-heart-pulse me-2 text-danger"></i>Nutrition Analyzer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <label class="form-label fw-medium">Enter a recipe name or ingredient list:</label>
+          <div class="input-group mb-3">
+            <input type="text" id="nutritionInput" class="form-control" placeholder="e.g., Paneer Butter Masala, lentil soup, rice and dal…" />
+            <button class="btn btn-danger" id="analyzeNutritionModalBtn">
+              <i class="bi bi-search me-1"></i>Analyze
+            </button>
+          </div>
+          <div id="nutritionModalResult" class="nutrition-result d-none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- FAVORITES OFFCANVAS                                               -->
+  <!-- ================================================================ -->
+  <div class="offcanvas offcanvas-end" id="favoritesPanel" style="width: min(420px, 95vw)">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title"><i class="bi bi-bookmark-star-fill text-warning me-2"></i>Saved Recipes</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      <div id="favoritesList" class="p-3">
+        <p class="text-muted text-center py-4">No saved recipes yet. Use the <strong>Save Recipe</strong> button in any AI response!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- HISTORY OFFCANVAS                                                 -->
+  <!-- ================================================================ -->
+  <div class="offcanvas offcanvas-end" id="historyPanel" style="width: min(440px, 95vw)">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title"><i class="bi bi-clock-history text-secondary me-2"></i>Session History</h5>
+      <div class="ms-auto d-flex gap-2">
+        <button class="btn btn-sm btn-outline-danger" id="clearHistoryBtn">
+          <i class="bi bi-trash me-1"></i>Clear
+        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+      </div>
+    </div>
+    <div class="offcanvas-body p-0">
+      <div id="historyList" class="p-3">
+        <p class="text-muted text-center py-4">No history yet. Start chatting with ChefBot!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- RECIPE CARD TEMPLATE (hidden, cloned by JS)                      -->
+  <!-- ================================================================ -->
+  <template id="recipeCardTemplate">
+    <div class="col-12 col-md-6">
+      <div class="card recipe-card h-100">
+        <div class="card-body p-3">
+          <div class="d-flex align-items-start justify-content-between mb-2">
+            <h6 class="recipe-card-title mb-0"></h6>
+            <span class="badge difficulty-badge"></span>
+          </div>
+          <div class="recipe-meta d-flex flex-wrap gap-1 mb-2">
+            <span class="meta-chip time-chip"><i class="bi bi-clock me-1"></i><span class="time-val"></span></span>
+            <span class="meta-chip"><i class="bi bi-people me-1"></i><span class="servings-val"></span></span>
+            <span class="meta-chip calorie-chip"><i class="bi bi-fire me-1"></i><span class="calorie-val"></span></span>
+          </div>
+          <div class="dietary-tags mb-2"></div>
+          <div class="match-indicator mb-3">
+            <div class="d-flex justify-content-between small mb-1">
+              <span>Ingredient match</span><span class="match-pct fw-semibold"></span>
+            </div>
+            <div class="progress" style="height:6px">
+              <div class="progress-bar bg-success match-bar"></div>
+            </div>
+          </div>
+          <button class="btn btn-sm btn-primary w-100 cook-now-btn">
+            <i class="bi bi-play-circle me-1"></i>Cook This Recipe
+          </button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Toast container -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer"></div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Marked.js for markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+  <!-- Custom JS -->
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
